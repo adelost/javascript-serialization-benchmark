@@ -1,11 +1,14 @@
 import avro from 'avro-js';
 import avsc from 'avsc';
 import BSON from 'bson';
-import fs from 'fs';
 import JsBin from 'js-binary';
 import Pbf from 'pbf';
 import protobufJs from 'protobufjs';
-import protons from 'protons';
+import v8 from 'v8';
+import { pack, unpack } from 'msgpackr';
+import { encode as cborEncode, decode as cborDecode } from 'cbor-x';
+import { create, toBinary, fromBinary } from '@bufbuild/protobuf';
+import { ItemsSchema } from './data/test_pb';
 import { ROOT_DIR } from './_root';
 import ProtoGoogleSchema from './data/google-protobuf_pb';
 import ProtoPbfSchema from './data/pbf_pb';
@@ -227,34 +230,6 @@ export function testProtoGoogle(testData: any): Promise<BenchmarkResult> {
   });
 }
 
-const ProtobufProtonsSchema = protons(fs.readFileSync(`${ROOT_DIR}/data/test.proto`));
-
-export function testProtoProtons(testData: any): Promise<BenchmarkResult> {
-  const Schema = ProtobufProtonsSchema.Items;
-  return benchmark({
-    data: testData,
-    encode: data => Schema.encode(data),
-    decode: data => Schema.decode(data),
-    sampleDecoded: data => JSON.parse(JSON.stringify(data.items[0])),
-  });
-}
-
-const ProtoMixedEncodeSchema = protons(fs.readFileSync(`${ROOT_DIR}/data/test.proto`));
-let ProtoMixedDecodeSchema: any = null;
-
-
-export async function testProtoMixed(testData: any): Promise<BenchmarkResult> {
-  const EncodeSchema = ProtoMixedEncodeSchema.Items;
-  if (!ProtoMixedDecodeSchema) ProtoMixedDecodeSchema = await protobufJs.load(`${ROOT_DIR}/data/test.proto`);
-  const DecodeSchema = ProtoMixedDecodeSchema.Items;
-  return benchmark({
-    data: testData,
-    encode: data => EncodeSchema.encode(data),
-    decode: data => DecodeSchema.decode(data),
-    sampleDecoded: data => data.items[0],
-  });
-}
-
 export function testBson(testData: any): Promise<BenchmarkResult> {
   return benchmark({
     data: testData,
@@ -278,6 +253,42 @@ export function testBser(testData: any): Promise<BenchmarkResult> {
     data: testData,
     encode: data => bser.dumpToBuffer(data),
     decode: data => bser.loadFromBuffer(data),
+    sampleDecoded: data => data.items[0],
+  });
+}
+
+export function testV8(testData: any): Promise<BenchmarkResult> {
+  return benchmark({
+    data: testData,
+    encode: data => v8.serialize(data),
+    decode: data => v8.deserialize(data),
+    sampleDecoded: data => data.items[0],
+  });
+}
+
+export function testMsgpack(testData: any): Promise<BenchmarkResult> {
+  return benchmark({
+    data: testData,
+    encode: data => pack(data),
+    decode: data => unpack(data),
+    sampleDecoded: data => data.items[0],
+  });
+}
+
+export function testCbor(testData: any): Promise<BenchmarkResult> {
+  return benchmark({
+    data: testData,
+    encode: data => cborEncode(data),
+    decode: data => cborDecode(data),
+    sampleDecoded: data => data.items[0],
+  });
+}
+
+export function testProtoBufEs(testData: any): Promise<BenchmarkResult> {
+  return benchmark({
+    data: testData,
+    encode: data => toBinary(ItemsSchema, create(ItemsSchema, data)),
+    decode: data => fromBinary(ItemsSchema, data),
     sampleDecoded: data => data.items[0],
   });
 }

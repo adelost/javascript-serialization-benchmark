@@ -41,20 +41,20 @@ def main():
         "BSON",
         "PROTOBUF JS",
         "PROTOBUF Pbf",
-        "PROTOBUF mixed",
-
+        "V8",
+        "MSGPACK",
+        "CBOR",
     ]
     plot()
-    #
+
     # Protocol buffers
     OUTPUT_NAME='bench-protobuf.svg'
     ALLOWED_LABELS = [
         "JSON",
         "PROTOBUF JS",
         "PROTOBUF Pbf",
-        "PROTOBUF Protons",
         "PROTOBUF Google",
-        "PROTOBUF mixed",
+        "PROTOBUF ES",
     ]
     plot()
 
@@ -150,6 +150,8 @@ def plot_x(baselineKey, yKey, id, yLabel, log):
         keys = TEST_DATA
 
     for key in keys:
+        if key not in TEST_DATA:
+            continue
         item = TEST_DATA[key]
         x_values = item['x']
         x_start, x_stop = find_x_range(x_values)
@@ -185,7 +187,7 @@ def pad_y_values(x_values, y_values):
 def calc_ratios(y_values, baseline_y_values):
     y_values_ratios = []
     for i, v in enumerate(y_values):
-        if i < len(baseline_y_values) and baseline_y_values[i] is not 0:
+        if i < len(baseline_y_values) and baseline_y_values[i] != 0:
             ratio = v / baseline_y_values[i]
         else:
             ratio = 0

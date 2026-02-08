@@ -9,10 +9,9 @@ node_modules/
 .vscode/
 
 # Project
-tmp/
 /.local/
 /media/
-/img/
+/img/tmp.svg
 
 
 # CI

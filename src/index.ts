@@ -11,17 +11,19 @@ const TESTS = {
   testAvroAvsc: () => runTest('AVRO Avsc', ({ data }) => bench.testAvroAvsc(data), 372),
   testAvroAvscOptional: () => runTest('AVRO Avsc (optional)', ({ data }) => bench.testAvroAvscOptional(data), 372),
 
-
   testProtoJs: () => runTest('PROTOBUF JS', ({ data }) => bench.testProtoJs(data), 153),
   testProtoPbf: () => runTest('PROTOBUF Pbf', ({ data }) => bench.testProtoPbf(data), 372),
   testProtoGoogle: () => runTest('PROTOBUF Google', ({ data }) => bench.testProtoGoogle(data), 98),
-  testProtoProtons: () => runTest('PROTOBUF Protons', ({ data }) => bench.testProtoProtons(data), 40),
-  testProtoMixed: () => runTest('PROTOBUF mixed', ({ data }) => bench.testProtoMixed(data), 372),
 
   testJsBin: () => runTest('JSBIN', ({ data }) => bench.testJsBin(data), 372),
   testJsBinOptional: () => runTest('JSBIN (optional)', ({ data }) => bench.testJsBinOptional(data), 372),
 
   testBser: () => runTest('BSER', ({ data }) => bench.testBser(data), 372),
+
+  testV8: () => runTest('V8', ({ data }) => bench.testV8(data), 372),
+  testMsgpack: () => runTest('MSGPACK', ({ data }) => bench.testMsgpack(data), 372),
+  testCbor: () => runTest('CBOR', ({ data }) => bench.testCbor(data), 372),
+  testProtoBufEs: () => runTest('PROTOBUF ES', ({ data }) => bench.testProtoBufEs(data), 98),
 
   testJsonUnmapped: () => runTest('JSON (unmapped)', ({ unmappedData }) => bench.testJsonUnmapped(unmappedData), 298),
   testAvroAvscUnmapped: () => runTest('AVRO Avsc (unmapped)', ({ unmappedData }) => bench.testAvroAvscUnmapped(unmappedData), 237),
@@ -58,13 +60,16 @@ async function runDefault() {
   await TESTS.testProtoJs();
   await TESTS.testProtoPbf();
   await TESTS.testProtoGoogle();
-  await TESTS.testProtoProtons();
-  await TESTS.testProtoMixed();
 
   await TESTS.testJsBin();
   await TESTS.testJsBinOptional();
 
   await TESTS.testBser();
+
+  await TESTS.testV8();
+  await TESTS.testMsgpack();
+  await TESTS.testCbor();
+  await TESTS.testProtoBufEs();
 
   await TESTS.testJsonUnmapped();
   await TESTS.testAvroAvscUnmapped();

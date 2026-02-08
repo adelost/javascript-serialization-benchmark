@@ -1,26 +1,29 @@
 #!/bin/bash
 
-npm start 'testJson'
+node --expose-gc -r ts-node/register index.ts -- testJson
 
-npm start 'testBson'
+node --expose-gc -r ts-node/register index.ts -- testBson
 
-npm start 'testAvroJs'
-npm start 'testAvroAvsc'
-npm start 'testAvroAvscOptional'
+node --expose-gc -r ts-node/register index.ts -- testAvroJs
+node --expose-gc -r ts-node/register index.ts -- testAvroAvsc
+node --expose-gc -r ts-node/register index.ts -- testAvroAvscOptional
 
-npm start 'testProtoJs'
-npm start 'testProtoPbf'
-npm start 'testProtoGoogle'
-npm start 'testProtoProtons'
-npm start 'testProtoMixed'
+node --expose-gc -r ts-node/register index.ts -- testProtoJs
+node --expose-gc -r ts-node/register index.ts -- testProtoPbf
+node --expose-gc -r ts-node/register index.ts -- testProtoGoogle
 
-npm start 'testJsBin'
-npm start 'testJsBinOptional'
+node --expose-gc -r ts-node/register index.ts -- testJsBin
+node --expose-gc -r ts-node/register index.ts -- testJsBinOptional
 
-npm start 'testBser'
+node --expose-gc -r ts-node/register index.ts -- testBser
 
-npm start 'testJsonUnmapped'
-npm start 'testAvroAvscUnmapped'
-npm start 'testJsBinUnmapped'
-npm start 'testJsBinJsonUnmapped'
-npm start 'testBsonUnmapped'
+node --expose-gc -r ts-node/register index.ts -- testV8
+node --expose-gc -r ts-node/register index.ts -- testMsgpack
+node --expose-gc -r ts-node/register index.ts -- testCbor
+node --expose-gc -r ts-node/register index.ts -- testProtoBufEs
+
+node --expose-gc -r ts-node/register index.ts -- testJsonUnmapped
+node --expose-gc -r ts-node/register index.ts -- testAvroAvscUnmapped
+node --expose-gc -r ts-node/register index.ts -- testJsBinUnmapped
+node --expose-gc -r ts-node/register index.ts -- testJsBinJsonUnmapped
+# testBsonUnmapped excluded: current bson version does not support arrays as root input

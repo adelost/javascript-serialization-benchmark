@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 import { ROOT_DIR } from '../_root';
 import {
   FAST_SPEED_LIMIT_MB,
@@ -127,6 +128,7 @@ export async function benchmark(args: BenchmarkArgs): Promise<BenchmarkResult> {
 
 export function loadPlotData(): any {
   if (!fs.existsSync(PLOT_FILE_PATH)) {
+    fs.mkdirSync(path.dirname(PLOT_FILE_PATH), { recursive: true });
     fs.writeFileSync(PLOT_FILE_PATH, JSON.stringify({}));
   }
   return JSON.parse(fs.readFileSync(PLOT_FILE_PATH, 'utf8'));

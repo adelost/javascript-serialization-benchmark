@@ -1,0 +1,8 @@
+version: v2
+inputs:
+  - directory: src/data
+plugins:
+  - local: protoc-gen-es
+    out: src/data
+    opt:
+      - target=ts
