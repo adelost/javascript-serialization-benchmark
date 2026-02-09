@@ -25,17 +25,17 @@ The following formats and libraries are compared:
 
 Based on the benchmark results in this article, the top libraries are ranked as follows (encode/decode values are x times faster than JSON, size is compared to JSON):
 
-| # | Library | Encode | Decode | Size |
-|---|---------|--------|--------|------|
-| 1 | `avsc` | 8-12x | 3-7x | 32% |
-| 2 | `msgpackr` | 2-4x | 2-3x | 53% |
-| 3 | `cbor-x` | 2-4x | 1-2x | 53% |
-| 4 | `js-binary` | 1.5-2x | 1-5x | 32% |
-| 5 | `v8` | 1-2x | 0.6-1x | 61% |
-| 6 | `protobufjs` | 0.2-0.7x | 1-3x | 42% |
-| 7 | `pbf` | 0.8-1.4x | 0.7-1.4x | 42% |
-| 8 | `bson` | 0.8-1x | 1-3x | 79% |
-| 9 | `bser` | 0.5-0.8x | 0.5-0.8x | 67% |
+| # | Library | Encode | Decode | Size | Active |
+|---|---------|--------|--------|------|--------|
+| 1 | `avsc` | 8-12x | 3-7x | 32% | ✅ |
+| 2 | `msgpackr` | 2-4x | 2-3x | 53% | ✅ |
+| 3 | `cbor-x` | 2-4x | 1-2x | 53% | ✅ |
+| 4 | `js-binary` | 1.5-2x | 1-5x | 32% | ⚠️ |
+| 5 | `v8` | 1-2x | 0.6-1x | 61% | ✅ |
+| 6 | `protobufjs` | 0.2-0.7x | 1-3x | 42% | ✅ |
+| 7 | `pbf` | 0.8-1.4x | 0.7-1.4x | 42% | ✅ |
+| 8 | `bson` | 0.8-1x | 1-3x | 79% | ✅ |
+| 9 | `bser` | 0.5-0.8x | 0.5-0.8x | 67% | ⚠️ |
 
 Due to various reasons outlined in the article, the author would not currently recommend the following libraries for performance-sensitive use:
 
@@ -579,7 +579,7 @@ flowchart TD
 
 If raw performance is the primary concern, `avsc` is the clear winner at 8-12x faster encoding and 3-7x faster decoding compared to JSON. It also achieves the best compression ratio (32%). The main trade-off is that Avro is less widely adopted than Protocol Buffers, and the decoded objects contain minor prototype pollution (which is harmless for most purposes).
 
-`js-binary` is a strong runner-up with clean deserialization and a similarly compact format (32%), but uses a custom binary format that limits interoperability with other programming languages.
+`js-binary` is a strong runner-up with clean deserialization and a similarly compact format (32%), but uses a custom binary format with no cross-language support and has not been updated since 2018, which may be a concern for long-term maintenance.
 
 ### Cross-language interoperability
 
