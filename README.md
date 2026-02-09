@@ -337,7 +337,7 @@ During decoding it performs slightly slower than native JSON. However, the deser
 
 `protons` is fast at encoding but very slow at decoding.
 
-The decoded object has all fields wrapped into getters, which might be partially responsible for the poor decoding performance, and while serviceable, could cause some issues depending on how the decoded data is used. The easiest way to remove all getters/setters is to perform a JSON serialization/deserialization which will further increase decoding time.
+The decoded object has all fields wrapped into getters, which might be partially responsible for the slower decoding performance, and while serviceable, could cause some issues depending on how the decoded data is used. The easiest way to remove all getters/setters is to perform a JSON serialization/deserialization which will further increase decoding time.
 
 It was only able to decode payloads of 47 MB in size, but opposite to `protobufjs` it can encode payloads of much greater size.
 
@@ -357,7 +357,7 @@ Despite being the newest implementation, it performed similarly to `google-proto
 
 ### Further remarks
 
-Due to poor results and to reduce redundancy, `protons`, `google-protobuf` and `@bufbuild/protobuf` will be excluded in further comparisons.
+Due to similar performance limitations and to reduce redundancy, `protons`, `google-protobuf` and `@bufbuild/protobuf` will be excluded in further comparisons.
 
 ## Result (final)
 
