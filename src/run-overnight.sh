@@ -35,6 +35,7 @@ run_test testBson
 run_test testV8
 run_test testMsgpack
 run_test testCbor
+run_test testOmniBuf
 
 echo ""
 echo "=== Benchmark complete at $(date) ==="

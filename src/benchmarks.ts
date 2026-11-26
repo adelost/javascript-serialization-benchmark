@@ -8,7 +8,9 @@ import v8 from 'v8';
 import { pack, unpack } from 'msgpackr';
 import { encode as cborEncode, decode as cborDecode } from 'cbor-x';
 import { create, toBinary, fromBinary } from '@bufbuild/protobuf';
+import { toBinary as omnibufToBinary, fromBinary as omnibufFromBinary } from '@omnibuf/node';
 import { ItemsSchema } from './data/test_pb';
+import { ItemsSchema as OmniBufItemsSchema } from './data/test_omnibuf.pb';
 import { ROOT_DIR } from './_root';
 import ProtoGoogleSchema from './data/google-protobuf_pb';
 import ProtoPbfSchema from './data/pbf_pb';
@@ -289,6 +291,15 @@ export function testProtoBufEs(testData: any): Promise<BenchmarkResult> {
     data: testData,
     encode: data => toBinary(ItemsSchema, create(ItemsSchema, data)),
     decode: data => fromBinary(ItemsSchema, data),
+    sampleDecoded: data => data.items[0],
+  });
+}
+
+export function testOmniBuf(testData: any): Promise<BenchmarkResult> {
+  return benchmark({
+    data: testData,
+    encode: data => omnibufToBinary(OmniBufItemsSchema, data),
+    decode: data => omnibufFromBinary(OmniBufItemsSchema, data),
     sampleDecoded: data => data.items[0],
   });
 }
