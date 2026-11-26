@@ -6,3 +6,5 @@ plugins:
     out: src/data
     opt:
       - target=ts
+  - local: protoc-gen-omnibuf-es
+    out: src/data

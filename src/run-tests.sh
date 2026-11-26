@@ -21,6 +21,7 @@ node --expose-gc -r ts-node/register index.ts -- testV8
 node --expose-gc -r ts-node/register index.ts -- testMsgpack
 node --expose-gc -r ts-node/register index.ts -- testCbor
 node --expose-gc -r ts-node/register index.ts -- testProtoBufEs
+node --expose-gc -r ts-node/register index.ts -- testOmniBuf
 
 node --expose-gc -r ts-node/register index.ts -- testJsonUnmapped
 node --expose-gc -r ts-node/register index.ts -- testAvroAvscUnmapped

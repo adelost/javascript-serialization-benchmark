@@ -24,6 +24,7 @@ const TESTS = {
   testMsgpack: () => runTest('MSGPACK', ({ data }) => bench.testMsgpack(data), 372),
   testCbor: () => runTest('CBOR', ({ data }) => bench.testCbor(data), 372),
   testProtoBufEs: () => runTest('PROTOBUF ES', ({ data }) => bench.testProtoBufEs(data), 98),
+  testOmniBuf: () => runTest('OMNIBUF', ({ data }) => bench.testOmniBuf(data), 372),
 
   testJsonUnmapped: () => runTest('JSON (unmapped)', ({ unmappedData }) => bench.testJsonUnmapped(unmappedData), 298),
   testAvroAvscUnmapped: () => runTest('AVRO Avsc (unmapped)', ({ unmappedData }) => bench.testAvroAvscUnmapped(unmappedData), 237),
@@ -70,6 +71,7 @@ async function runDefault() {
   await TESTS.testMsgpack();
   await TESTS.testCbor();
   await TESTS.testProtoBufEs();
+  await TESTS.testOmniBuf();
 
   await TESTS.testJsonUnmapped();
   await TESTS.testAvroAvscUnmapped();

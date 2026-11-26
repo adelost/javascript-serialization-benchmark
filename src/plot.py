@@ -44,6 +44,7 @@ def main():
         "V8",
         "MSGPACK",
         "CBOR",
+        "OMNIBUF",
     ]
     plot()
 
