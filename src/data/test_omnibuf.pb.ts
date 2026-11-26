@@ -68,6 +68,7 @@ export function decodeItem(buf: globalThis.Uint8Array, target?: Item, depth = 0,
     throw new globalThis.Error(`omnibuf: nesting depth ${depth} exceeds MaxNestingDepth (${maxDepth})`);
   }
   const out: Item = target ?? new ItemMsg();
+  let unknownFields: $ob.UnknownField[] | null = null;
   if (target !== undefined) {
     if (!(out instanceof ItemMsg)) {
       globalThis.Object.setPrototypeOf(out, ItemMsg.prototype);
@@ -76,11 +77,11 @@ export function decodeItem(buf: globalThis.Uint8Array, target?: Item, depth = 0,
       globalThis.Object.assign(out, new ItemMsg());
       if (globalThis.Object.hasOwn(out, '$unknown')) delete (out as any).$unknown;
     }
+    if (globalThis.Array.isArray((out as any).$unknown)) unknownFields = (out as any).$unknown;
   }
   const n = endPos;
   let pos = startPos;
-  const view = dv ?? new globalThis.DataView(buf.buffer, buf.byteOffset, buf.byteLength);
-  let unknownFields: $ob.UnknownField[] | null = target !== undefined && globalThis.Array.isArray((out as any).$unknown) ? (out as any).$unknown : null;
+  let view = dv;
   while (pos < n) {
     let tag = 0;
     const b0 = buf[pos]!;
@@ -133,12 +134,14 @@ export function decodeItem(buf: globalThis.Uint8Array, target?: Item, depth = 0,
       }
       case 41: {
         if (n - pos < 8) throw new globalThis.Error('omnibuf: truncated float64');
+        if (view === undefined) view = new globalThis.DataView(buf.buffer, buf.byteOffset, buf.byteLength);
         out.y = view.getFloat64(pos, true);
         pos += 8;
         break;
       }
       case 57: {
         if (n - pos < 8) throw new globalThis.Error('omnibuf: truncated float64');
+        if (view === undefined) view = new globalThis.DataView(buf.buffer, buf.byteOffset, buf.byteLength);
         out.z = view.getFloat64(pos, true);
         pos += 8;
         break;
@@ -327,6 +330,7 @@ export function createItems(init?: $ob.MessageInitShape<typeof ItemsSchema>): It
 
 export function minBytesItems(msg: Partial<Items>): number {
   let sz = 0;
+  { const a = msg.items; if (a !== undefined && a !== null) { for (let i = 0; i < a.length && sz <= 16383; i++) { const el = a[i]; if (el !== null && el !== undefined) sz += 2 + minBytesItem(el); } } }
   return sz;
 }
 
@@ -423,6 +427,7 @@ export function decodeItems(buf: globalThis.Uint8Array, target?: Items, depth = 
     throw new globalThis.Error(`omnibuf: nesting depth ${depth} exceeds MaxNestingDepth (${maxDepth})`);
   }
   const out: Items = target ?? new ItemsMsg();
+  let unknownFields: $ob.UnknownField[] | null = null;
   if (target !== undefined) {
     if (!(out instanceof ItemsMsg)) {
       globalThis.Object.setPrototypeOf(out, ItemsMsg.prototype);
@@ -431,13 +436,13 @@ export function decodeItems(buf: globalThis.Uint8Array, target?: Items, depth = 
       globalThis.Object.assign(out, new ItemsMsg());
       if (globalThis.Object.hasOwn(out, '$unknown')) delete (out as any).$unknown;
     }
+    if (globalThis.Array.isArray((out as any).$unknown)) unknownFields = (out as any).$unknown;
   }
   const n = endPos;
   let pos = startPos;
-  const view = dv ?? new globalThis.DataView(buf.buffer, buf.byteOffset, buf.byteLength);
+  let view = dv;
   const isMerge = options?.merge === true;
   let seenMask = 0;
-  let unknownFields: $ob.UnknownField[] | null = target !== undefined && globalThis.Array.isArray((out as any).$unknown) ? (out as any).$unknown : null;
   while (pos < n) {
     let tag = 0;
     const b0 = buf[pos]!;
@@ -522,6 +527,7 @@ export function decodeItems(buf: globalThis.Uint8Array, target?: Items, depth = 
               if (!globalThis.Array.isArray(elems)) { elems = new globalThis.Array<Item>(elemCount); out.items = elems; } else { baseIdx = elems.length; elems.length = baseIdx + elemCount; }
             }
             try {
+              if (view === undefined && elemCount > 0) view = new globalThis.DataView(buf.buffer, buf.byteOffset, buf.byteLength);
               for (let i = 0; i < elemCount; i++) {
                 if (p >= arrEnd) throw new globalThis.Error('omnibuf: corrupt submsg array');
                 let elNum = 0;
